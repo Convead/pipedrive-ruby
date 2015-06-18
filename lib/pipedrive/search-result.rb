@@ -3,13 +3,16 @@ module Pipedrive
 
     # Class Methods
     class << self
-      
-      def search(term, start=0, limit=nil)
-        res = get(resource_path, :query => { :term => term, :start => start, :limit => limit})
+
+      def search(term, options = {})
+        options[:start] ||= 0
+        query_options = options.merge(:term => term)
+
+        res = get(resource_path, :query => query_options)
         if res.ok?
           res['data'].nil? ? [] : res['data'].map{|obj| new(obj)}
         else
-          bad_response(res,{:term=>term,:start=>start,:limit=>limit})
+          bad_response(res,{:term=>term,:start=>options[:start],:limit=>options[:limit]})
         end
       end
   
