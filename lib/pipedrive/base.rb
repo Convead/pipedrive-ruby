@@ -75,7 +75,7 @@ module Pipedrive
       def bad_response(response, params={})
         puts params.inspect
         if response.class == HTTParty::Response
-          raise HTTParty::ResponseError, response
+          raise HTTParty::ResponseError, response.inspect
         end
         raise StandardError, 'Unknown error'
       end
